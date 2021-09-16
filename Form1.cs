@@ -15,10 +15,11 @@ namespace WinFormsApp1
         private Graphics g;
 
         // Cache font instead of recreating font objects each time we paint.
-        delegate int Function(int val);
-        private int Sq(int x) { return x * x; }
-        private int Sinus(int x) { return (int)(Math.Sin(x)*100); }
-        private int Sq2(int x) { return (int)Math.Pow(x, 3) - 5 * x + 2; }
+        delegate float Function(int val);
+        private float Sq(int x) { return x * x; }
+        private float Sinus(int x) { return (float)Math.Sin(x); }
+        private float Cosinus(int x) { return (float)Math.Cos(x); }
+        private float Sq2(int x) { return (float)(Math.Pow(x, 2) - 6 * x + 9); }
         public Form1()
         {
             InitializeComponent();
@@ -48,7 +49,7 @@ namespace WinFormsApp1
             // f = Sinus;
             Graphics g = e.Graphics;
             g.TranslateTransform(pictureBox1.Width / 2, pictureBox1.Height / 2);//хочу сместить начало координат
-            g.ScaleTransform(1*3, -1*5);
+            g.ScaleTransform(1*20, -1*20);
             
             //square sq = x => x * x;//рисуем квадратичную параболу
             //sin s = x => (int)(Math.Sin(x) * 100);//рисуем sin, немного отмасштабированный
@@ -56,20 +57,22 @@ namespace WinFormsApp1
             // sq_2 sq2 = x => (int)(Math.Pow(x, 3) - 30 * x + 2); //уравнение третьей степени
 
             int x = -this.ClientSize.Width;
-            
-            g.DrawLine(System.Drawing.Pens.Blue, -pictureBox1.Width / 2, 0, pictureBox1.Width / 2, 0);
-            g.DrawLine(System.Drawing.Pens.Blue, 0, -pictureBox1.Height / 2, 0, pictureBox1.Height / 2);
+            Pen pen = new Pen(Color.Blue, 0.5F);
+           // pen.Width = 0.5F;
+            g.DrawLine(pen, -pictureBox1.Width / 2, 0, pictureBox1.Width / 2, 0);
+            g.DrawLine(pen, 0, -pictureBox1.Height / 2, 0, pictureBox1.Height / 2);
            // g.DrawLine(System.Drawing.Pens.Green, 0, 1, 2, 100);
             g.Flush();
             pictureBox1.Invalidate();
-
-            int y = f(x);
+            Pen pengraph = new Pen(Color.Red, 0.3F);
+            float y = f(x);
             //int y = Math.Round(Math.Sin(x), MidpointRounding.ToEven);
             for (int i = x + 1; i < pictureBox1.Right; i += 1)
             {
 
-                int j = f(i);
-                g.DrawLine(System.Drawing.Pens.Red, x, y, i, j);
+                float j = f(i);
+               
+                g.DrawLine(pengraph, x, y, i, j);
                 x = i;
                 y = j;
                 g.Flush();
@@ -89,7 +92,7 @@ namespace WinFormsApp1
         private void pictureBox1_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
 
-            Draw(Sq, e);
+            Draw(Sq2, e);
         }
 
 
